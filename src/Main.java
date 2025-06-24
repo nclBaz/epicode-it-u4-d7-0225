@@ -1,7 +1,6 @@
 import entities.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 	public static void main(String[] args) {
@@ -9,7 +8,14 @@ public class Main {
 		User giovanni = new User("Giovanni", "Storti");
 		User giacomo = new User("Giacomo", "Poretti");
 
-		ArrayList<User> usersList = new ArrayList<>(); // Nelle parentesi angolari andrò a specificare il tipo di dato che voglio venga salvato nella lista
+		// ArrayList<User> usersList = new ArrayList<>(); // Nelle parentesi angolari andrò a specificare il tipo di dato che voglio venga salvato nella lista
+		List<User> usersList = new LinkedList<>(); // UPCASTING. E' una tecnica avanzata che consente di "tenere una porta aperta per il futuro". Nel
+		// senso che se un domani volessi sostituire l'ArrayList con un altro tipo di List, come ad es. una Linked List, lo potrei fare cambiando
+		// solo il tipo della classe e non 10000 righe di codice.
+		// Se utilizzassi solo metodi specifici di ArrayList purtroppo non potrei fare questa cosa però.
+		// L'upcasting lo uso quando so che utilizzerò metodi comuni ai vari tipi di liste
+		// Le Linked List sono più performanti in termini di aggiunte/rimozioni (quando parliamo di grossi numeri) rispetto alle ArrayList, di contro
+		// però queste ultime sono ben più compatte e quindi più efficienti dal punto di vista della memoria utilizzata
 
 		// ----------------------------------------------------- ADD -------------------------------------------------------------
 		// Permette di aggiungere elementi o in coda, o specificando un indice/posizione che di conseguenza shifta tutti gli altri elementi
@@ -85,5 +91,41 @@ public class Main {
 		System.out.println("La lista è vuota? " + usersList.isEmpty());
 		usersList.clear();
 		System.out.println("La lista è vuota? " + usersList.isEmpty());
+
+		// ***************************************************** COLLECTIONS E TIPI PRIMITIVI *******************************************************
+		// ArrayList<int> interi = new ArrayList<>(); // <- Non posso creare collections di tipi primitivi
+		// Posso però utilizzare le cosiddette WRAPPER CLASSES, ovvero classi che corrispondono ai tipi primitivi. Ogni tipo primitivo avrà la sua:
+		// Integer, Double, Boolean, Byte, Short,.....
+		ArrayList<Integer> numeriInteri = new ArrayList<>();
+		numeriInteri.add(10);
+		numeriInteri.add(100);
+
+		// ************************************************** RIMUOVERE ELEMENTI DA UNA LISTA DURANTE UN CICLO ***************************************
+		ArrayList<String> lettere = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e")); // Lista creata con già 5 elementi
+		/* lettere.add("a");
+		lettere.add("b");
+		lettere.add("c");
+		lettere.add("d");
+		lettere.add("e"); */
+
+		// Non si possono rimuovere elementi mentre si sta ciclando una collection! (ConcurrentModificationException)
+		/* for (String lettera : lettere) {
+			if (lettera.equals("c")) lettere.remove(lettera);
+			else System.out.println(lettera);
+		} */
+
+		// Per poter rimuovere elementi durante un ciclo bisognerebbe utilizzare il cosiddetto ITERATOR
+		Iterator<String> iterator = lettere.iterator(); // Ogni collection mi può fornire il proprio ITERATOR
+		while (iterator.hasNext()) { // Vai avanti fino a che ci sono elementi
+			String lettera = iterator.next(); // iterator.next() mi restituisce sempre l'elemento corrente dell'iterazione
+			System.out.println(lettera);
+			if (lettera.equals("c")) iterator.remove(); // N.B. non sto facendo lettere.remove(), bensì iterator.remove()! altrimenti avrei
+			// lo stesso problema di sopra (ConcurrentModificationException). Utilizzo l'iterator perché è tramite questo oggetto speciale
+			// che posso effettuare in maniera safe la rimozione di un elemento durante l'iterazione e lui si occuperà di "rimettere assieme i pezzi"
+			// della lista
+		}
+
+		System.out.println(lettere);
+
 	}
 }

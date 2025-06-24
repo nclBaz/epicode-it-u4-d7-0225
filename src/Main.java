@@ -127,5 +127,84 @@ public class Main {
 
 		System.out.println(lettere);
 
+		// ******************************************************** SET *******************************************************************
+		/* I SET a differenza delle Liste NON AMMETTONO DUPLICATI. Per poterci dare questa funzionalità però ad ogni inserimento (tramite add() )
+		dovrà andare a iterare elemento per elemento per verificare se quell'elemento esiste già, se non c'è lo inserisce altrimenti ci torna false
+		*/
+		HashSet<User> usersSet = new HashSet<>();
+		// Set<User> usersSet = new HashSet<>(); <-- Anche qua volendo potrei usare l'upcasting
+		// Alternativa a HashSet è LinkedHashSet che mantiene anche un ordine di inserimento degli elementi
+		usersSet.add(aldo);
+		usersSet.add(giovanni);
+		usersSet.add(giacomo);
+		usersSet.add(aldo); // Aggiungere un duplicato non è vietato nel senso che non riceverò un'eccezione. Mi viene però segnalato da IntellIJ
+		// con un warning che è un'operazione sprecata in quanto il Set non aggiungerà tale elemento
+		usersSet.add(aldo2);
+		System.out.println(usersSet);
+
+		TreeSet<String> alfabeto = new TreeSet<>(); // Non ammette duplicati ma inoltre ordina gli elementi (operazione molto costosa quindi
+		// se non necessaria meglio usare un altro tipo di Set)
+		alfabeto.add("z");
+		alfabeto.add("c");
+		alfabeto.add("a");
+		alfabeto.add("h");
+		alfabeto.add("c");
+
+		System.out.println(alfabeto);
+
+		alfabeto.add("p");
+		alfabeto.add("b");
+
+		System.out.println(alfabeto);
+
+		// ****************************************************************** MAP ************************************************************
+		// Le Map sono strutture dati caratterizzate da elementi costituiti da coppie di <CHIAVE, VALORE>. Nelle Map quindi dovrò, in fase di creazione,
+		// andare a specificare di che tipo sarà la Chiave e di che tipo sarà il valore. Le chiavi devono essere UNICHE
+
+		// "Albero" - "Definizione di albero"
+		// "Casa" - "Definizione di casa"
+		// "Barbagianni" - "Definizione di barbagianni"
+		HashMap<String, String> dizionario = new HashMap<>();
+		dizionario.put("Albero", "Definizione di albero"); // Quando aggiungo nuovi elementi devo passare sia chiave che valore rispettando i tipi
+		dizionario.put("Casa", "Definizione di casa");
+		dizionario.put("Barbagianni", "Definizione di barbagianni");
+		System.out.println(dizionario);
+
+		HashMap<Integer, User> usersMap = new HashMap<>();
+		// 123123 - Aldo Baglio
+		// 123124 - Giovanni Storti
+		// 123125 - Giacomo Poretti
+		usersMap.put(123123, aldo);
+		usersMap.put(123124, giovanni);
+		usersMap.put(123123, giacomo); // Se la chiave esiste già sto SOSTITUENDO l'elemento preesistente con quello nuovo
+		System.out.println(usersMap);
+
+		System.out.println("---------------------------------------------- LEGGERE ELEMENTI --------------------------------------------");
+		String barbagianni = dizionario.get("Barbagianni");
+		System.out.println(barbagianni);
+		User fromMap = usersMap.get(123126);
+		if (fromMap != null) // meglio prevenire che curare
+			System.out.println(fromMap.getName());
+		else System.out.println("Non trovato");
+
+		System.out.println("---------------------------------------------- LEGGERE ELEMENTI --------------------------------------------");
+		dizionario.remove("Casa"); // Anche per rimuovere specifico la chiave
+		System.out.println(dizionario);
+
+		System.out.println("---------------------------------------------- SOSTITUIRE UN ELEMENTO --------------------------------------------");
+		dizionario.replace("Barbagianni", "Definizione aggiornata di Barbagianni"); // Non aggiunge un elemento se non lo trova, mi tornerà null in quel caso
+
+		System.out.println("---------------------------------------------- OTTENERE ELENCO DELLE CHIAVI --------------------------------------------");
+		Set<String> elencoChiavi = dizionario.keySet();
+		System.out.println(elencoChiavi);
+		for (String chiave : elencoChiavi) {
+			System.out.println("Chiave: " + chiave);
+			System.out.println("Valore: " + dizionario.get(chiave));
+		}
+
+		System.out.println("---------------------------------------------- OTTENERE ELENCO DEI VALORI --------------------------------------------");
+		Collection<String> valori = dizionario.values();
+		System.out.println(valori);
+		
 	}
 }
